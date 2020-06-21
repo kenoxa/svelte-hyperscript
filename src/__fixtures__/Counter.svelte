@@ -7,6 +7,6 @@
   }
 </script>
 
-<button on:click on:click={handleClick}>
+<button on:click="{handleClick}" on:click>
   <slot {count}>Count is {count}</slot>
 </button>

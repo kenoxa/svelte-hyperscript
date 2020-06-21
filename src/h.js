@@ -19,6 +19,8 @@ import {
   transition_out, // eslint-disable-line camelcase
 } from 'svelte/internal'
 
+import StoreValue from './store-value'
+
 const COMPONENT_SLOTS = new WeakMap()
 
 export default function h(type, props, ...children) {
@@ -135,12 +137,19 @@ function createComponentFragment([Component, props, children, componentSlotSette
 function createSlotDefinition(children, setters) {
   return [
     () => createSlot(children),
+    // Notify each listener on each change
     (changes) => {
       forEach(changes, (key, value) => {
         const setter = setters[key]
-        if (setter) setter(value, key)
+        if (typeof setter === 'function') {
+          setter(value, key)
+        } else if (setter && typeof setter.set === 'function') {
+          setter.set(value)
+        }
       })
     },
+    // Mark all as changed
+    (changes) => Object.keys(changes).length,
   ]
 }
 
@@ -202,7 +211,7 @@ function createElementFragment([type, props, children]) {
       childNodes.forEach((childNode) => mountNode(childNode, node, null))
       current = true
 
-      // Listerner handling
+      // Listener handling
       if (remount) run_all(dispose)
 
       dispose = []
@@ -246,12 +255,20 @@ function createNodeFactory(Child) {
     return () => text(Child)
   }
 
-  const component = new Child({
-    props: {
-      $$scope: { ctx: [] },
-    },
-    $$inline: true,
-  })
+  const component = isStore(Child)
+    ? new StoreValue({
+        props: {
+          store: Child,
+          $$scope: { ctx: [] },
+        },
+        $$inline: true,
+      })
+    : new Child({
+        props: {
+          $$scope: { ctx: [] },
+        },
+        $$inline: true,
+      })
 
   return () => {
     create_component(component.$$.fragment)
@@ -291,4 +308,8 @@ function isAttribute(key) {
 
 function isListener(key) {
   return key.startsWith('on:')
+}
+
+function isStore(object) {
+  return object && typeof object.subscribe === 'function'
 }

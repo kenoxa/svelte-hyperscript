@@ -1,3 +1,4 @@
+import svelte from 'rollup-plugin-svelte'
 import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
 import babel from '@rollup/plugin-babel'
@@ -9,7 +10,11 @@ import pkg from './package.json'
 const production = !process.env.ROLLUP_WATCH
 
 const plugins = [
-  resolve({ dedupe: ['svelte'] }),
+  svelte(),
+  resolve({
+    dedupe: ['svelte'],
+    extensions: ['.svelte', '.mjs', '.js', '.cjs', '.json', '.node'],
+  }),
   babel({
     babelHelpers: 'runtime',
     exclude: 'node_modules/**',

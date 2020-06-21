@@ -1,6 +1,6 @@
 {
   "name": "svelte-hyperscript",
-  "version": "1.0.0",
+  "version": "1.0.0-dev",
   "description": "hyperscript for svelte",
   "source": "src/h.js",
   "main": "./dist/cjs/h.js",
@@ -19,9 +19,11 @@
     "dist"
   ],
   "scripts": {
+    "prebuild": "rimraf dist",
     "build": "rollup -c && echo '{\"type\":\"module\"}' > dist/esm/package.json",
     "lint": "xo",
     "fix": "xo --fix",
+    "prepublishOnly": "npm run build",
     "test": "jest",
     "test:watch": "npm test -- --watch",
     "test:coverage": "npm test -- --coverage"
@@ -68,10 +70,13 @@
     "jest": "^26.0.1",
     "jest-environment-jsdom-sixteen": "^1.0.3",
     "prettier": "^2.0.5",
+    "rimraf": "^3.0.2",
     "rollup": "^2.17.1",
     "rollup-plugin-node-externals": "^2.2.0",
+    "rollup-plugin-svelte": "^5.2.3",
     "rollup-plugin-terser": "^6.1.0",
     "svelte": "^3.22.3",
+    "svelte-fragment-component": "^1.0.0",
     "svelte-jester": "^1.0.6",
     "xo": "^0.30.0"
   }
