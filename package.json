@@ -1,6 +1,6 @@
 {
   "name": "svelte-hyperscript",
-  "version": "1.0.0-dev",
+  "version": "1.0.0",
   "description": "hyperscript for svelte",
   "source": "src/h.js",
   "main": "./dist/cjs/h.js",
