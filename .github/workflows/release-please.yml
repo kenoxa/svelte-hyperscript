@@ -42,7 +42,7 @@ jobs:
           path: node_modules
           key: node_modules-${{ runner.os }}-12.x-${{ hashFiles('**/package-lock.json') }}
       - name: Install
-        if: ${{ steps.release.outputs.release_created }} && steps.cache-modules.outputs.cache-hit != 'true'
+        if: steps.release.outputs.release_created == 'true' && steps.cache-modules.outputs.cache-hit != 'true'
         run: npm ci
       - name: Publish
         if: ${{ steps.release.outputs.release_created }}

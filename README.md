@@ -2,12 +2,16 @@
 
 > use [hyperscript](https://github.com/hyperhype/hyperscript) to create svelte components
 
-[![GitHub license](https://img.shields.io/github/license/sastan/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE)
-[![NPM version](https://img.shields.io/npm/v/svelte-hyperscript.svg?style=flat)](https://www.npmjs.com/package/svelte-hyperscript)
-[![CI](https://github.com/sastan/svelte-hyperscript/workflows/Node.js%20NPM/badge.svg)](https://github.com/sastan/svelte-hyperscript/actions?query=workflow%3A%22Node.js+NPM%22)
-[![Coverage Status](https://coveralls.io/repos/github/sastan/svelte-hyperscript/badge.png?branch=main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![License](https://badgen.net/badge/npm/license/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE)
+[![NPM version](https://badgen.net/badge/npm/v/svelte-hyperscript)](https://www.npmjs.com/package/svelte-hyperscript)
+[![Svelte version](https://img.shields.io/npm/dependency-version/svelte-hyperscript/peer/svelte)](https://svelte.dev)
+[![minified + gzip](https://badgen.net/badge/bundlephobia/mingzip/svelte-hyperscript)](https://bundlephobia.com/result?p=svelte-hyperscript)
+
+[![CI](https://badgen.net/badge/github/status/sastan/svelte-hyperscript/main)](https://github.com/sastan/svelte-hyperscript/actions?query=workflow%3A%22Node.js+NPM%22?branch=main)
+[![Coverage Status](https://badgen.net/badge/coveralls/c/github/sastan/svelte-hyperscript/main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
+[![XO Status](https://badgen.net/badge/xo/status/svelte-hyperscript)](https://github.com/xojs/xo)
 
 ## Installation
 
