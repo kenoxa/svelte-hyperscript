@@ -22,7 +22,7 @@
     "prebuild": "rimraf dist",
     "build": "rollup -c && echo '{\"type\":\"module\"}' > dist/esm/package.json",
     "lint": "xo",
-    "fix": "xo --fix",
+    "fix": "xo --fix && prettier --ignore-path .gitignore --write .",
     "prepublishOnly": "npm run build",
     "test": "jest",
     "test:watch": "npm test -- --watch",

@@ -40,8 +40,8 @@ export default function h(type, props, ...children) {
 
   const isComponent = typeof type !== 'string'
 
-  const instance = (_self, _props, _invalidate) => {
-    // Console.log('instance', { self, props, type, children })
+  const instance = (/* self, props, invalidate */) => {
+    // For bind:value
     // if (isComponent) {
     //   self.$set = (newProps) => {
     //     // $$invalidate(0, $$props = assign(assign({}, $$props), exclude_internal_props($$new_props)));
@@ -106,7 +106,7 @@ function createComponentFragment([Component, props, children, componentSlotSette
   })
 
   forEach($$listeners, (key, value) => {
-    // TODO on:click|preventDefault => prevent_default(click_handler)
+    // Insert on:click|preventDefault => prevent_default(click_handler)
     component.$on(key.slice(3), value)
   })
 
@@ -217,7 +217,7 @@ function createElementFragment([type, props, children]) {
       dispose = []
       forEach(props, (key, value) => {
         if (isListener(key)) {
-          // TODO on:click|preventDefault => prevent_default(click_handler)
+          // Insert on:click|preventDefault => prevent_default(click_handler)
           dispose.push(listen(node, key.slice(3), value))
         }
       })

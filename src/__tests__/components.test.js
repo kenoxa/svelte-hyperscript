@@ -2,7 +2,7 @@ import { describe, expect, it, jest } from '@jest/globals'
 import { render, fireEvent } from '@testing-library/svelte'
 import { writable, get } from 'svelte/store'
 
-import Counter from '../__fixtures__/Counter.svelte'
+import Counter from '../__fixtures__/Counter'
 
 import h from '../h'
 
