@@ -7,8 +7,8 @@
 [![Svelte version](https://img.shields.io/npm/dependency-version/svelte-hyperscript/peer/svelte)](https://svelte.dev)
 [![minified + gzip](https://badgen.net/badge/bundlephobia/mingzip/svelte-hyperscript)](https://bundlephobia.com/result?p=svelte-hyperscript)
 
-[![CI](https://badgen.net/badge/github/status/sastan/svelte-hyperscript/main)](https://github.com/sastan/svelte-hyperscript/actions?query=workflow%3A%22Node.js+NPM%22?branch=main)
-[![Coverage Status](https://badgen.net/badge/coveralls/c/github/sastan/svelte-hyperscript/main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
+[![CI](https://github.com/sastan/svelte-hyperscript/workflows/CI/badge.svg)](https://github.com/sastan/svelte-hyperscript/actions?query=branch%3Amain+workflow%3ACI)
+[![Coverage Status](https://coveralls.io/repos/github/sastan/svelte-hyperscript/badge.svg?branch=main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
 [![XO Status](https://badgen.net/badge/xo/status/svelte-hyperscript)](https://github.com/xojs/xo)

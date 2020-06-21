@@ -1,5 +1,5 @@
 # Lint, Test and Build
-name: Node.js NPM
+name: CI
 
 on: [push, pull_request]
 
