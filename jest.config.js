@@ -11,16 +11,6 @@ module.exports = {
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
 
-  // An object that configures minimum threshold enforcement for coverage results
-  coverageThreshold: {
-    global: {
-      branches: 100,
-      functions: 100,
-      lines: 100,
-      statements: 100,
-    },
-  },
-
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
 
   // The test environment that will be used for testing
