@@ -15,8 +15,7 @@ import {
   run_all, // eslint-disable-line camelcase
   safe_not_equal, // eslint-disable-line camelcase
   text,
-  transition_in, // eslint-disable-line camelcase
-  transition_out, // eslint-disable-line camelcase
+  // Intro/Outro: transition_in, // eslint-disable-line camelcase
 } from 'svelte/internal'
 
 import StoreValue from './store-value'
@@ -69,7 +68,7 @@ export default function h(type, props, ...children) {
 }
 
 function createComponentFragment([Component, props, children, componentSlotSetters]) {
-  let current
+  // Intro/Outro: let current
 
   const $$props = {}
   const $$listeners = {}
@@ -116,18 +115,18 @@ function createComponentFragment([Component, props, children, componentSlotSette
     },
     /* Mount */ m(target, anchor) {
       mount_component(component, target, anchor)
-      current = true
+      // Intro/Outro: current = true
     },
     /* Update */ p: noop,
-    /* Intro */ i(local) {
+    /* Intro i(local) {
       if (current) return
       transitionNodeIn(component, local)
       current = true
-    },
-    /* Outro */ o(local) {
+    }, */
+    /* Outro o(local) {
       transitionNodeOut(component, local)
       current = false
-    },
+    }, */
     /* Destroy */ d(detaching) {
       destroy_component(component, detaching)
     },
@@ -156,7 +155,7 @@ function createSlotDefinition(children, setters) {
 function createSlot(children) {
   const factories = children.map((child) => createNodeFactory(child))
   let nodes
-  let current
+  // Intro/Outro: let current
 
   return {
     /* Create */ c() {
@@ -164,18 +163,18 @@ function createSlot(children) {
     },
     /* Mount */ m(target, anchor) {
       nodes.forEach((node) => mountNode(node, target, anchor))
-      current = true
+      // Intro/Outro: current = true
     },
     /* Update */ p: noop,
-    /* Intro */ i(local) {
+    /* Intro i(local) {
       if (current) return
       nodes.forEach((node) => transitionNodeIn(node, local))
       current = true
-    },
-    /* Outro */ o(local) {
+    }, */
+    /* Outro o(local) {
       nodes.forEach((node) => transitionNodeOut(node, local))
       current = false
-    },
+    }, */
     /* Destroy */ d(detaching) {
       nodes.forEach((node) => {
         if (node.$$) {
@@ -192,7 +191,7 @@ function createElementFragment([type, props, children]) {
   const factories = children.map((child) => createNodeFactory(child))
   let node
   let childNodes
-  let current
+  // Intro/Outro: let current
   let dispose
 
   return {
@@ -209,7 +208,7 @@ function createElementFragment([type, props, children]) {
     /* Mount */ m(target, anchor, remount) {
       insert(target, node, anchor)
       childNodes.forEach((childNode) => mountNode(childNode, node, null))
-      current = true
+      // Intro/Outro: current = true
 
       // Listener handling
       if (remount) run_all(dispose)
@@ -223,15 +222,15 @@ function createElementFragment([type, props, children]) {
       })
     },
     /* Update */ p: noop,
-    /* Intro */ i(local) {
+    /* Intro i(local) {
       if (current) return
       childNodes.forEach((childNode) => transitionNodeIn(childNode, local))
       current = true
-    },
-    /* Outro */ o(local) {
+    }, */
+    /* Outro o(local) {
       childNodes.forEach((childNode) => transitionNodeOut(childNode, local))
       current = false
-    },
+    }, */
     /* Destroy */ d(detaching) {
       if (detaching) detach(node)
 
@@ -284,6 +283,7 @@ function mountNode(child, target, anchor) {
   }
 }
 
+/* Intro/Outro:
 function transitionNodeIn(child, local) {
   if (child.$$) {
     transition_in(child.$$.fragment, local)
@@ -294,7 +294,7 @@ function transitionNodeOut(child, local) {
   if (child.$$) {
     transition_out(child.$$.fragment, local)
   }
-}
+} */
 
 function forEach(object, iteratee) {
   if (object) {
