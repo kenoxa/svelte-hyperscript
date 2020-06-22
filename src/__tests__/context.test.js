@@ -1,5 +1,5 @@
-import { describe, expect, it, jest } from '@jest/globals'
-import { render, fireEvent, act } from '@testing-library/svelte'
+import { describe, expect, it } from '@jest/globals'
+import { render } from '@testing-library/svelte'
 import { getContext } from 'svelte'
 import Fragment from 'svelte-fragment-component'
 

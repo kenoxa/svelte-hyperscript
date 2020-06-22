@@ -1,5 +1,4 @@
 import {
-  SvelteComponent,
   append,
   attr,
   create_component, // eslint-disable-line camelcase
@@ -12,10 +11,15 @@ import {
   listen,
   mount_component, // eslint-disable-line camelcase
   noop,
+  prevent_default, // eslint-disable-line camelcase
   run_all, // eslint-disable-line camelcase
   safe_not_equal, // eslint-disable-line camelcase
+  self,
+  stop_propagation, // eslint-disable-line camelcase
+  SvelteComponent,
   text,
   // Intro/Outro: transition_in, // eslint-disable-line camelcase
+  // Intro/Outro: transition_out, // eslint-disable-line camelcase
 } from 'svelte/internal'
 
 import StoreValue from './store-value'
@@ -58,7 +62,17 @@ export default function h(type, props, ...children) {
   class Component extends SvelteComponent {
     constructor(options) {
       super()
-      init(this, options, instance, createFragment, safe_not_equal, { ...$$props })
+      init(
+        this,
+        options,
+        instance,
+        createFragment,
+        safe_not_equal,
+        Object.keys($$props).reduce((memo, key, index) => {
+          memo[key] = index
+          return memo
+        }, {}),
+      )
     }
   }
 
@@ -104,9 +118,8 @@ function createComponentFragment([Component, props, children, componentSlotSette
     $$inline: true,
   })
 
-  forEach($$listeners, (key, value) => {
-    // Insert on:click|preventDefault => prevent_default(click_handler)
-    component.$on(key.slice(3), value)
+  forEach($$listeners, (key, handler) => {
+    component.$on(key.slice(3), handler)
   })
 
   return {
@@ -214,10 +227,9 @@ function createElementFragment([type, props, children]) {
       if (remount) run_all(dispose)
 
       dispose = []
-      forEach(props, (key, value) => {
+      forEach(props, (key, handler) => {
         if (isListener(key)) {
-          // Insert on:click|preventDefault => prevent_default(click_handler)
-          dispose.push(listen(node, key.slice(3), value))
+          dispose.push(listenTo(node, key, handler))
         }
       })
     },
@@ -281,6 +293,30 @@ function mountNode(child, target, anchor) {
   } else {
     append(target, child)
   }
+}
+
+function listenTo(node, property, handler) {
+  const [event, ...modifiers] = property.slice(3).split(/\|/g)
+
+  let options
+  modifiers.forEach((modifier) => {
+    switch (modifier) {
+      case 'preventDefault':
+        handler = prevent_default(handler)
+        break
+      case 'stopPropagation':
+        handler = stop_propagation(handler)
+        break
+      case 'self':
+        handler = self(handler)
+        break
+      default:
+        // Add to options: passive, capture, once
+        ;(options || (options = {}))[modifier] = true
+    }
+  })
+
+  return listen(node, event, handler, options)
 }
 
 /* Intro/Outro:

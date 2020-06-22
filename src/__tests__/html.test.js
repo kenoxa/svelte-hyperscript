@@ -1,5 +1,5 @@
-import { describe, expect, it, jest } from '@jest/globals'
-import { render, fireEvent, act } from '@testing-library/svelte'
+import { describe, expect, it } from '@jest/globals'
+import { render, act } from '@testing-library/svelte'
 import { writable } from 'svelte/store'
 import Fragment from 'svelte-fragment-component'
 
@@ -19,19 +19,6 @@ describe('html', () => {
     const { container } = render(h(Fragment, null, h('span', null, 'a'), h('span', null, 'b')))
 
     expect(container.innerHTML).toMatch('<div><span>a</span><span>b</span></div>')
-  })
-
-  it('supports click listener', async () => {
-    const handleClick = jest.fn()
-
-    const { getByRole } = render(h('button', { 'on:click': handleClick }, 'Click Me!'))
-    const button = getByRole('button')
-
-    // Using await when firing events is unique to the svelte testing library because
-    // we have to wait for the next `tick` so that Svelte flushes all pending state changes.
-    await fireEvent.click(button)
-
-    expect(handleClick).toHaveBeenCalledTimes(1)
   })
 
   it('allows to use a store as child', async () => {

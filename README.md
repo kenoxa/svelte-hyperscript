@@ -102,7 +102,7 @@ const button = new LabeledButton({
 - [x] plain html children
 - [x] readable store children
 - [x] on:eventname
-- [ ] on:eventname modifiers
+- [x] on:eventname modifiers
 - [ ] bind:property **but** using setter/getter or writable store
 - [ ] use:action
 - [ ] transition:fn
