@@ -9,12 +9,21 @@ module.exports = {
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/', '/__fixtures__/', '/__mocks__/'],
+
+  // An object that configures minimum threshold enforcement for coverage results
+  coverageThreshold: {
+    global: {
+      branches: 95,
+      functions: 95,
+      lines: 95,
+      statements: 95,
+    },
+  },
 
   setupFilesAfterEnv: ['@testing-library/jest-dom'],
 
   // The test environment that will be used for testing
-  // testEnvironment: "jest-environment-jsdom",
   testEnvironment: 'jest-environment-jsdom-sixteen',
 
   // No transforms - just plain js
