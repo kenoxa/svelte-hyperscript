@@ -4,9 +4,10 @@
 
 [![License](https://badgen.net/npm/license/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE)
 [![Latest Release](https://badgen.net/npm/v/svelte-hyperscript)](https://www.npmjs.com/package/svelte-hyperscript)
+[![View changelog](https://badgen.net/badge/%E2%80%8B/Explore%20Changelog/green?icon=awesome)](https://changelogs.xyz/svelte-hyperscript)
+
 [![CI](https://github.com/sastan/svelte-hyperscript/workflows/CI/badge.svg)](https://github.com/sastan/svelte-hyperscript/actions?query=branch%3Amain+workflow%3ACI)
 [![Coverage Status](https://badgen.net/coveralls/c/github/sastan/svelte-hyperscript/main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
-[![View changelog](https://badgen.net/badge/changelogs.xyz/Explore%20Changelog/green)](https://changelogs.xyz/svelte-hyperscript)
 [![PRs Welcome](https://badgen.net/badge/PRs/welcome/purple)](http://makeapullrequest.com)
 [![Conventional Commits](https://badgen.net/badge/Conventional%20Commits/1.0.0/cyan)](https://conventionalcommits.org)
 
