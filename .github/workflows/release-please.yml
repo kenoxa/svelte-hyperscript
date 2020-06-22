@@ -9,22 +9,27 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: GoogleCloudPlatform/release-please-action@v1.3.2
+      - name: Release Please
+        uses: GoogleCloudPlatform/release-please-action@v1.3.2
         id: release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
+
       # The logic below handles the npm publication:
-      - uses: actions/checkout@v2
+      - name: Checkout repository
+        uses: actions/checkout@v2
         # these if statements ensure that a publication only occurs when
         # a new release is created:
         if: ${{ steps.release.outputs.release_created }}
+
       - name: Use Node.js 12.x
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
           registry-url: https://registry.npmjs.org/
+
       - name: Cache ~/.npm
         if: ${{ steps.release.outputs.release_created }}
         uses: actions/cache@v2
@@ -34,6 +39,7 @@ jobs:
           restore-keys: |
             npm-${{ runner.os }}
             npm-
+
       - name: Cache ./node_modules
         if: ${{ steps.release.outputs.release_created }}
         id: cache-modules
@@ -41,9 +47,11 @@ jobs:
         with:
           path: node_modules
           key: node_modules-${{ runner.os }}-12.x-${{ hashFiles('**/package-lock.json') }}
+
       - name: Install
         if: steps.release.outputs.release_created == 'true' && steps.cache-modules.outputs.cache-hit != 'true'
         run: npm ci
+
       - name: Publish
         if: ${{ steps.release.outputs.release_created }}
         run: npm publish
