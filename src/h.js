@@ -247,33 +247,33 @@ function createElementFragment([type, props, children]) {
 }
 
 function createNodeFactory(Child) {
-  if (!Child) {
+  if (Child === undefined || Child === null || Child === false) {
     return () => empty()
   }
 
-  if (typeof Child === 'string') {
-    return () => text(Child)
+  if (typeof Child === 'function' || isStore(Child)) {
+    const component = isStore(Child)
+      ? new StoreValue({
+          props: {
+            store: Child,
+            $$scope: { ctx: [] },
+          },
+          $$inline: true,
+        })
+      : new Child({
+          props: {
+            $$scope: { ctx: [] },
+          },
+          $$inline: true,
+        })
+
+    return () => {
+      create_component(component.$$.fragment)
+      return component
+    }
   }
 
-  const component = isStore(Child)
-    ? new StoreValue({
-        props: {
-          store: Child,
-          $$scope: { ctx: [] },
-        },
-        $$inline: true,
-      })
-    : new Child({
-        props: {
-          $$scope: { ctx: [] },
-        },
-        $$inline: true,
-      })
-
-  return () => {
-    create_component(component.$$.fragment)
-    return component
-  }
+  return () => text(Child)
 }
 
 function mountNode(child, target, anchor) {

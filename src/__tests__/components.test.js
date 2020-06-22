@@ -3,6 +3,7 @@ import { render, fireEvent } from '@testing-library/svelte'
 import { writable, get } from 'svelte/store'
 
 import Counter from '../__fixtures__/Counter'
+import List from '../__fixtures__/List'
 
 import h from '../h'
 
@@ -78,5 +79,33 @@ describe('html', () => {
     await fireEvent.click(button)
     expect(get(count)).toBe(2)
     expect(button).toHaveTextContent('current count: 2')
+  })
+
+  it('allows to provide named slot content', () => {
+    const itemSetter = jest.fn()
+    const itemsSetter = jest.fn()
+    const items = ['a', 'b', 'c']
+
+    const { container } = render(
+      h(
+        List,
+        { items, 'let:item': itemSetter },
+        'each item',
+        h('p', { slot: 'footer', 'let:items': itemsSetter }, 'The end'),
+      ),
+    )
+
+    expect(container).toContainHTML(
+      `<ul><li>each item </li><li>each item </li><li>each item </li></ul> <p>The end</p>`,
+    )
+
+    expect(itemSetter.mock.calls).toMatchObject([
+      ['a', 'item'],
+      ['b', 'item'],
+      ['c', 'item'],
+    ])
+
+    expect(itemsSetter).toHaveBeenCalledTimes(1)
+    expect(itemsSetter).toHaveBeenCalledWith(items, 'items')
   })
 })

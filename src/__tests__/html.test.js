@@ -48,4 +48,10 @@ describe('html', () => {
     await act(() => count.set(-1))
     expect(container).toContainHTML('<span>count: -1</span>')
   })
+
+  it('ignores undefined, null & false children', () => {
+    const { container } = render(h('p', null, 'There', null, ' are ', '', 5, undefined, ' icons'))
+
+    expect(container).toContainHTML('<p>There are 5 icons</p>')
+  })
 })
