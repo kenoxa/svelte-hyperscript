@@ -11,17 +11,47 @@
 [![PRs Welcome](https://badgen.net/badge/PRs/welcome/purple)](http://makeapullrequest.com)
 [![Conventional Commits](https://badgen.net/badge/Conventional%20Commits/1.0.0/cyan)](https://conventionalcommits.org)
 
+## What?
+
+This package exposes an [hyperscript](https://github.com/hyperhype/hyperscript) compatible function: `h(tag, properties, ...children)` which returns a svelte component.
+
+## Why?
+
+This is the core for [svelte-jsx](https://www.npmjs.com/package/svelte-jsx) and [svelte-htm](https://www.npmjs.com/package/svelte-htm). These packages allow to simplify svelte testing code especially slot handling.
+
 ## Installation
 
 ```sh
 npm install svelte-hyperscript
 ```
 
-CDN: [UNPKG](https://unpkg.com/svelte-hyperscript/) | [jsDelivr](https://cdn.jsdelivr.net/npm/svelte-hyperscript/) (available as `window.svelteHyperscript`)
+And then import it:
+
+```js
+// using es modules
+import h from 'svelte-hyperscript'
+
+// common.js
+const h = require('svelte-hyperscript')
+```
+
+Or use script tags and globals ([UNPKG](https://unpkg.com/svelte-hyperscript/) | [jsDelivr](https://cdn.jsdelivr.net/npm/svelte-hyperscript/)).
+
+```html
+<!-- UNPKG -->
+<script src="https://unpkg.com/svelte-hyperscript"></script>
+
+<!-- jsDelivr -->
+<script src="https://cdn.jsdelivr.net/npm/svelte-hyperscript"></script>
+```
+
+And then grab it off the global like so:
+
+```js
+const h = svelteHyperscript
+```
 
 ## Usage
-
-This package exposes an [hyperscript](https://github.com/hyperhype/hyperscript) compatible function: `h(tag, properties, ...children)` which returns a svelte component.
 
 ```js
 import h from 'svelte-hyperscript'
@@ -35,9 +65,6 @@ const button = new LabeledButton({
   target: document.body,
 })
 ```
-
-This project is the core for [svelte-jsx](https://www.npmjs.com/package/svelte-jsx)
-and [svelte-htm](https://www.npmjs.com/package/svelte-htm).
 
 The above example written in jsx using [svelte-jsx](https://www.npmjs.com/package/svelte-jsx):
 
@@ -82,14 +109,13 @@ const button = new LabeledButton({
 - [ ] in:fn/out:fn
 - [x] `<slot>`
 - [x] `<slot name="name">`
-- [ ] `<slot let:name={setter}>` **but** using setter or readable store
-- [ ] `<slot let:name={property}>{property}</slot>`
+- [x] `<slot let:name={setter}>` **but** using setter or writable store
+- [x] `<slot let:name={property}>{property}</slot>` when using a writable store
 - [ ] Client-side component API
   - [ ] component.\$set(props)
   - [ ] component.\$on(event, callback)
   - [ ] component.\$destroy()
 - [x] context propagation
-- [ ] Lifecycle component: `<Component init={() => setContext()}>...<//>`
 
 ## Support
 
