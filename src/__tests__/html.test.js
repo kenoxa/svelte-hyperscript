@@ -37,6 +37,7 @@ describe('html', () => {
   it('allows to use a store as child', async () => {
     const count = writable(0)
 
+    // <span>count: {$count}</span>
     const { container } = render(h('span', null, 'count: ', count))
 
     expect(container).toContainHTML('<span>count: 0</span>')

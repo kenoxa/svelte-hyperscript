@@ -46,14 +46,12 @@ jobs:
       - name: Run the tests and generate coverage report
         run: npm test -- --coverage
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+      - name: Coveralls Parallel
+        uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          file: coverage/lcov.info
-          name: ${{ runner.os }}-${{ matrix.node-version }}
-          flags: ${{ runner.os }},${{ matrix.node-version }}
-          env_vars: OS
+          flag-name: ${{ matrix.node-version }}
+          parallel: true
 
       - name: Build
         run: npm run build --if-present

@@ -3,7 +3,7 @@
 > use [hyperscript](https://github.com/hyperhype/hyperscript) to create svelte components
 
 [![License](https://badgen.net/npm/license/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE)
-[![Latest Release](https://badgen.net/github/release/sastan/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/releases)
+[![Latest Release](https://badgen.net/npm/v/svelte-hyperscript)](https://www.npmjs.com/package/svelte-hyperscript)
 [![CI](https://github.com/sastan/svelte-hyperscript/workflows/CI/badge.svg)](https://github.com/sastan/svelte-hyperscript/actions?query=branch%3Amain+workflow%3ACI)
 [![Coverage Status](https://badgen.net/codecov/c/github/sastan/svelte-hyperscript/main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
 [![PRs Welcome](https://badgen.net/badge/PRs/welcome/purple)](http://makeapullrequest.com)

@@ -65,6 +65,7 @@ describe('html', () => {
   it('allows to access default slot values using writeable store', async () => {
     const count = writable(-1) // Should be set to 0 before slot rendering
 
+    // <Counter let:count>current count: {$count}</Counter>
     const { getByRole } = render(h(Counter, { 'let:count': count }, 'current count: ', count))
     const button = getByRole('button')
 
