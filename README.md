@@ -158,9 +158,9 @@ h('div', { 'use:action': (node) => action(node, parameters) })
 
 ## Related Projects
 
-- [svelte-jsx]: write svelte components using [jsx]
-- [svelte-htm]: [**H**yperscript **T**agged **M**arkup](https://www.npmjs.com/package/htm) for svelte
-- [svelte-fragment-component]: a utility component
+- [svelte-jsx] - write svelte components using [jsx]
+- [svelte-htm] - [**H**yperscript **T**agged **M**arkup](https://www.npmjs.com/package/htm) for svelte
+- [svelte-fragment-component] - a utility component
 
 ## Feature Set
 
