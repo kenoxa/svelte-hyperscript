@@ -1,4 +1,5 @@
 import {
+  add_resize_listener, // eslint-disable-line camelcase
   append,
   attr,
   bind,
@@ -8,6 +9,7 @@ import {
   detach,
   element,
   empty,
+  identity,
   init,
   insert,
   listen,
@@ -16,10 +18,16 @@ import {
   prevent_default, // eslint-disable-line camelcase
   run_all, // eslint-disable-line camelcase
   safe_not_equal, // eslint-disable-line camelcase
+  select_option, // eslint-disable-line camelcase
+  select_options, // eslint-disable-line camelcase
+  select_value, // eslint-disable-line camelcase
+  select_multiple_value, // eslint-disable-line camelcase
   self,
+  set_input_value, // eslint-disable-line camelcase
   stop_propagation, // eslint-disable-line camelcase
   SvelteComponent,
   text,
+  to_number, // eslint-disable-line camelcase
   // Intro/Outro: transition_in, // eslint-disable-line camelcase
   // Intro/Outro: transition_out, // eslint-disable-line camelcase
 } from 'svelte/internal'
@@ -231,13 +239,34 @@ function createElementFragment([type, props, children]) {
   // Intro/Outro: let current
   let dispose
 
+  const $$props = {}
+  const $$listeners = {}
+  const $$bindings = {}
+  forEach(props, (key, value) => {
+    if (isListener(key)) {
+      const event = key.slice(3)
+      $$listeners[event] = value
+    } else if (isBinding(key)) {
+      const binding = key.slice(5)
+      $$bindings[binding] = {
+        store: value,
+        handler: createElementBinding(type, binding, value, props),
+      }
+    } else {
+      $$props[key] = value
+    }
+  })
+
   return {
     /* Create */ c() {
       node = element(type)
-      forEach(props, (key, value) => {
-        if (isAttribute(key)) {
-          attr(node, key, value)
-        }
+
+      if (type === 'option' || isCheckableInput(type, $$props)) {
+        node.__value = $$props.value
+      }
+
+      forEach($$props, (key, value) => {
+        attr(node, key, value)
       })
 
       childNodes = factories.map((create) => create())
@@ -245,16 +274,28 @@ function createElementFragment([type, props, children]) {
     /* Mount */ m(target, anchor, remount) {
       insert(target, node, anchor)
       childNodes.forEach((childNode) => mountNode(childNode, node, null))
+
       // Intro/Outro: current = true
 
       // Listener handling
       if (remount) run_all(dispose)
 
       dispose = []
-      forEach(props, (key, handler) => {
-        if (isListener(key)) {
-          dispose.push(listenTo(node, key, handler))
+      forEach($$listeners, (event, handler) => {
+        dispose.push(listenTo(node, event, handler))
+      })
+
+      forEach($$bindings, (binding, { store, handler }) => {
+        // Initial store update
+        if (isReadonlyBinding(binding) || get(store) === undefined) {
+          handler.call(node)
         }
+
+        if (!isReadonlyBinding(binding)) {
+          subscribeWithBinding(type, binding, node, store, props)
+        }
+
+        listenWithBinding(dispose, type, binding, node, store, handler, props)
       })
     },
     /* Update */ p: noop,
@@ -279,6 +320,103 @@ function createElementFragment([type, props, children]) {
       run_all(dispose)
     },
   }
+}
+
+function createElementBinding(type, binding, store, props) {
+  let toValue = (self) => self[binding]
+
+  if (binding === 'group' && isCheckableInput(type, props)) {
+    if (props.type === 'radio') {
+      // This is the only early return --- I don't like it either...
+      return function () {
+        if (this.checked) {
+          store.set(this.__value)
+        }
+      }
+    }
+
+    toValue = (self) => {
+      const values = new Set(get(store) || [])
+
+      if (self.checked) {
+        values.add(self.__value)
+      } else {
+        values.delete(self.__value)
+      }
+
+      return [...values]
+    }
+  } else if (binding === 'this') {
+    toValue = identity
+  } else if (binding === 'value') {
+    if (type === 'select') {
+      if (props.multiple) {
+        toValue = (self) => select_multiple_value(self)
+      } else {
+        toValue = (self) => select_value(self)
+      }
+    } else if (isCheckableInput(type, props)) {
+      toValue = (self) => self.checked
+    } else if (isNumberInput(type, props)) {
+      toValue = (self) => to_number(self.value)
+    }
+  }
+
+  return function () {
+    store.set(toValue(this))
+  }
+}
+
+// eslint-disable-next-line max-params
+function subscribeWithBinding(type, binding, node, store, props) {
+  if (binding !== 'group' && isCheckableInput(type, props)) {
+    binding = 'checked'
+  }
+
+  store.subscribe((value) => {
+    if (binding === 'group' && isCheckableInput(type, props)) {
+      if (props.type === 'radio') {
+        node.checked = value === node.__value
+      } else {
+        node.checked = Boolean(value) && value.includes(node.__value)
+      }
+    } else if (type === 'select') {
+      if (props.multiple) {
+        select_options(node, value)
+      } else {
+        select_option(node, value)
+      }
+    } else {
+      switch (binding) {
+        case 'value':
+          set_input_value(node, value)
+          break
+        default:
+          node[binding] = value
+      }
+    }
+  })
+}
+
+// eslint-disable-next-line max-params
+function listenWithBinding(dispose, type, binding, node, store, handler, props) {
+  let listener
+
+  if (isMeasuredBinding(binding)) {
+    listener = add_resize_listener(node, handler.bind(node))
+  } else if (binding === 'this') {
+    listener = () => store.set(null)
+  } else if (isCheckableInput(type, props) || type === 'select') {
+    listener = listen(node, 'change', handler)
+  } else {
+    if (type === 'input' && props.type === 'range') {
+      dispose.push(listen(node, 'change', handler))
+    }
+
+    listener = listen(node, 'input', handler)
+  }
+
+  dispose.push(listener)
 }
 
 function createNodeFactory(Child) {
@@ -316,7 +454,7 @@ function mountNode(child, target, anchor) {
 }
 
 function listenTo(node, property, handler) {
-  const [event, ...modifiers] = property.slice(3).split(/\|/g)
+  const [event, ...modifiers] = property.split(/\|/g)
 
   let options
   modifiers.forEach((modifier) => {
@@ -358,10 +496,6 @@ function forEach(object, iteratee) {
   }
 }
 
-function isAttribute(key) {
-  return /^(?!(?:on|bind|class|use|transition|in|animate|let):)/.test(key)
-}
-
 function isListener(key) {
   return key.startsWith('on:')
 }
@@ -370,6 +504,38 @@ function isBinding(key) {
   return key.startsWith('bind:')
 }
 
+const READONLY_BINDINGS = new Set([
+  'duration',
+  'buffered',
+  'played',
+  'seekable',
+  'seeking',
+  'ended',
+  'videoWidth',
+  'videoHeight',
+  'clientWidth',
+  'clientHeight',
+  'offsetWidth',
+  'offsetHeight',
+  'this',
+])
+function isReadonlyBinding(binding) {
+  return READONLY_BINDINGS.has(binding)
+}
+
+const MEASURED_BINDINGS = new Set(['clientWidth', 'clientHeight', 'offsetWidth', 'offsetHeight'])
+function isMeasuredBinding(binding) {
+  return MEASURED_BINDINGS.has(binding)
+}
+
 function isStore(object) {
   return object && typeof object.subscribe === 'function'
+}
+
+function isCheckableInput(type, props) {
+  return type === 'input' && (props.type === 'checkbox' || props.type === 'radio')
+}
+
+function isNumberInput(type, props) {
+  return type === 'input' && (props.type === 'number' || props.type === 'range')
 }
