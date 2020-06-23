@@ -99,7 +99,7 @@ const button = new LabeledButton({
 
 ## API
 
-We [aim to support](#feature-set) all svelte features. In some cases this is not possible due to the static nature of hypescript. For those case we provided feasible workarounds:
+We [aim to support](#feature-set) all svelte features. In some cases this is not possible due to the static nature of hyperscript. For those case we provided feasible workarounds:
 
 ### Using stores to allow reactivity
 
@@ -139,14 +139,14 @@ The [tests](https://github.com/sastan/svelte-hyperscript/tree/main/src/__tests__
 
 ### Action factories
 
-The [action feature](https://svelte.dev/docs#use_action) of svelte is supported but lacks the possibility to pass parameters to the action. This can still be achieved using a wrapper actions:
+The [action feature](https://svelte.dev/docs#use_action) of svelte is supported but lacks the possibility to pass parameters to the action. This can still be achieved using a factory function as action:
 
 ```js
 import h from 'svelte-hyperscript'
 
 import action from 'some-action-module'
 
-h('div', { 'use:first': (node) => action(node, parameters) })
+h('div', { 'use:action': (node) => action(node, parameters) })
 ```
 
 ## Feature Set
