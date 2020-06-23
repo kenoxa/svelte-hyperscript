@@ -2,12 +2,12 @@
 
 > use [hyperscript](https://github.com/hyperhype/hyperscript) to create [svelte](https://svelte.dev/) components
 
-[![License](https://badgen.net/npm/license/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE)
+[![License](https://badgen.net/npm/license/svelte-hyperscript)](https://github.com/kenoxa/svelte-hyperscript/blob/main/LICENSE)
 [![Latest Release](https://badgen.net/npm/v/svelte-hyperscript)](https://www.npmjs.com/package/svelte-hyperscript)
 [![View changelog](https://badgen.net/badge/%E2%80%8B/Explore%20Changelog/green?icon=awesome)](https://changelogs.xyz/svelte-hyperscript)
 
-[![CI](https://github.com/sastan/svelte-hyperscript/workflows/CI/badge.svg)](https://github.com/sastan/svelte-hyperscript/actions?query=branch%3Amain+workflow%3ACI)
-[![Coverage Status](https://badgen.net/coveralls/c/github/sastan/svelte-hyperscript/main)](https://coveralls.io/github/sastan/svelte-hyperscript?branch=main)
+[![CI](https://github.com/kenoxa/svelte-hyperscript/workflows/CI/badge.svg)](https://github.comkenoxan/svelte-hyperscript/actions?query=branch%3Amain+workflow%3ACI)
+[![Coverage Status](https://badgen.net/coveralls/c/github/kenoxa/svelte-hyperscript/main)](https://coveralls.io/github/kenoxa/svelte-hyperscript?branch=main)
 [![PRs Welcome](https://badgen.net/badge/PRs/welcome/purple)](http://makeapullrequest.com)
 [![Conventional Commits](https://badgen.net/badge/Conventional%20Commits/1.0.0/cyan)](https://conventionalcommits.org)
 
@@ -142,7 +142,7 @@ test('write into an input', () => {
 })
 ```
 
-The [tests](https://github.com/sastan/svelte-hyperscript/tree/main/src/__tests__) are a good source of how to use this feature.
+The [tests](https://github.com/kenoxa/svelte-hyperscript/tree/main/src/__tests__) are a good source of how to use this feature.
 
 ### Action factories
 
@@ -190,7 +190,7 @@ h('div', { 'use:action': (node) => action(node, parameters) })
 
 ## Support
 
-This project is free and open-source, so if you think this project can help you or anyone else, you may [star it on GitHub](https://github.com/sastan/svelte-hyperscript). Feel free to [open an issue](https://github.com/sastan/svelte-hyperscript/issues) if you have any idea, question, or you've found a bug.
+This project is free and open-source, so if you think this project can help you or anyone else, you may [star it on GitHub](https://github.com/kenoxa/svelte-hyperscript). Feel free to [open an issue](https://github.comkenoxan/svelte-hyperscript/issues) if you have any idea, question, or you've found a bug.
 
 ## Contribute
 
@@ -212,7 +212,7 @@ We are following the [Conventional Commits](https://www.conventionalcommits.org)
 
 ## License
 
-`svelte-hyperscript` is open source software [licensed as MIT](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE).
+`svelte-hyperscript` is open source software [licensed as MIT](https://github.com/kenoxa/svelte-hyperscript/blob/main/LICENSE).
 
 [jsx]: https://reactjs.org/docs/introducing-jsx.html
 [svelte-jsx]: https://www.npmjs.com/package/svelte-jsx
