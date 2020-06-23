@@ -1,6 +1,6 @@
 <script>
   export let initialCount = 0
-  let count = initialCount
+  export let count = initialCount
 
   function handleClick() {
     count += 1

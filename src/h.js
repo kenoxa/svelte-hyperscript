@@ -1,6 +1,8 @@
 import {
   append,
   attr,
+  bind,
+  binding_callbacks, // eslint-disable-line camelcase
   create_component, // eslint-disable-line camelcase
   destroy_component, // eslint-disable-line camelcase
   detach,
@@ -21,6 +23,7 @@ import {
   // Intro/Outro: transition_in, // eslint-disable-line camelcase
   // Intro/Outro: transition_out, // eslint-disable-line camelcase
 } from 'svelte/internal'
+import { get } from 'svelte/store'
 
 import StoreValue from './store-value'
 
@@ -86,9 +89,15 @@ function createComponentFragment([Component, props, children, componentSlotSette
 
   const $$props = {}
   const $$listeners = {}
+  const $$bindings = {}
   forEach(props, (key, value) => {
     if (isListener(key)) {
-      $$listeners[key] = value
+      const event = key.slice(3)
+      $$listeners[event] = value
+    } else if (isBinding(key)) {
+      const binding = key.slice(5)
+      $$bindings[binding] = value
+      $$props[binding] = get(value)
     } else {
       $$props[key] = value
     }
@@ -118,17 +127,31 @@ function createComponentFragment([Component, props, children, componentSlotSette
     $$inline: true,
   })
 
-  forEach($$listeners, (key, handler) => {
-    component.$on(key.slice(3), handler)
+  forEach($$listeners, (event, handler) => {
+    component.$on(event, handler)
   })
+
+  forEach($$bindings, (binding, store) => {
+    // eslint-disable-next-line camelcase
+    binding_callbacks.push(() => bind(component, binding, (value) => store.set(value)))
+  })
+
+  let dispose
 
   return {
     /* Create */ c() {
       create_component(component.$$.fragment)
     },
-    /* Mount */ m(target, anchor) {
+    /* Mount */ m(target, anchor, remount) {
       mount_component(component, target, anchor)
       // Intro/Outro: current = true
+
+      if (remount) run_all(dispose)
+
+      dispose = []
+      forEach($$bindings, (binding, store) => {
+        dispose.push(store.subscribe((value) => component.$set({ [binding]: value })))
+      })
     },
     /* Update */ p: noop,
     /* Intro i(local) {
@@ -142,6 +165,7 @@ function createComponentFragment([Component, props, children, componentSlotSette
     }, */
     /* Destroy */ d(detaching) {
       destroy_component(component, detaching)
+      run_all(dispose)
     },
   }
 }
@@ -263,20 +287,16 @@ function createNodeFactory(Child) {
   }
 
   if (typeof Child === 'function' || isStore(Child)) {
+    const options = {
+      props: {
+        $$scope: { ctx: [] },
+      },
+      $$inline: true,
+    }
+
     const component = isStore(Child)
-      ? new StoreValue({
-          props: {
-            store: Child,
-            $$scope: { ctx: [] },
-          },
-          $$inline: true,
-        })
-      : new Child({
-          props: {
-            $$scope: { ctx: [] },
-          },
-          $$inline: true,
-        })
+      ? new StoreValue((options.props.store = Child) && options)
+      : new Child(options)
 
     return () => {
       create_component(component.$$.fragment)
@@ -339,11 +359,15 @@ function forEach(object, iteratee) {
 }
 
 function isAttribute(key) {
-  return !isListener(key)
+  return /^(?!(?:on|bind|class|use|transition|in|animate|let):)/.test(key)
 }
 
 function isListener(key) {
   return key.startsWith('on:')
+}
+
+function isBinding(key) {
+  return key.startsWith('bind:')
 }
 
 function isStore(object) {

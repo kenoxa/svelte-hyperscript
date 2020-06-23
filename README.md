@@ -103,7 +103,11 @@ const button = new LabeledButton({
 - [x] readable store children
 - [x] on:eventname
 - [x] on:eventname modifiers
-- [ ] bind:property **but** using setter/getter or writable store
+- [ ] bind:property **but** using writable store
+  - [x] bind:property on components
+  - [ ] bind:property on html elements
+  - [ ] bind:group
+  - [ ] bind:this
 - [ ] use:action
 - [ ] transition:fn
 - [ ] in:fn/out:fn
