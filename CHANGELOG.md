@@ -1,5 +1,12 @@
 # Changelog
 
+### [1.1.1](https://www.github.com/sastan/svelte-hyperscript/compare/v1.1.0...v1.1.1) (2020-06-23)
+
+
+### Bug Fixes
+
+* **exports:** use default as esm export to support new bundlers and jspm.dev ([a515564](https://www.github.com/sastan/svelte-hyperscript/commit/a51556446cf644b8c93c1d98e634a5b62bacfd47))
+
 ## [1.1.0](https://www.github.com/sastan/svelte-hyperscript/compare/v1.0.0...v1.1.0) (2020-06-23)
 
 
