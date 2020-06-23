@@ -7,9 +7,9 @@
   "exports": {
     "./package.json": "./package.json",
     ".": {
-      "import": "./dist/esm/h.js",
       "require": "./dist/cjs/h.js",
-      "umd": "./dist/umd/h.js"
+      "umd": "./dist/umd/h.js",
+      "default": "./dist/esm/h.js"
     }
   },
   "module": "./dist/esm/h.js",
