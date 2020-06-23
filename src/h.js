@@ -28,6 +28,7 @@ import {
   SvelteComponent,
   text,
   to_number, // eslint-disable-line camelcase
+  toggle_class, // eslint-disable-line camelcase
   // Intro/Outro: transition_in, // eslint-disable-line camelcase
   // Intro/Outro: transition_out, // eslint-disable-line camelcase
 } from 'svelte/internal'
@@ -242,10 +243,14 @@ function createElementFragment([type, props, children]) {
   const $$props = {}
   const $$listeners = {}
   const $$bindings = {}
+  const $$classes = {}
   forEach(props, (key, value) => {
     if (isListener(key)) {
       const event = key.slice(3)
       $$listeners[event] = value
+    } else if (isClass(key)) {
+      const name = key.slice(6)
+      $$classes[name] = value
     } else if (isBinding(key)) {
       const binding = key.slice(5)
       $$bindings[binding] = {
@@ -285,6 +290,10 @@ function createElementFragment([type, props, children]) {
         dispose.push(listenTo(node, event, handler))
       })
 
+      forEach($$classes, (name, store) => {
+        dispose.push(toggleClass(node, name, store))
+      })
+
       forEach($$bindings, (binding, { store, handler }) => {
         // Initial store update
         if (isReadonlyBinding(binding) || get(store) === undefined) {
@@ -320,6 +329,12 @@ function createElementFragment([type, props, children]) {
       run_all(dispose)
     },
   }
+}
+
+function toggleClass(node, name, store) {
+  return store.subscribe((active) => {
+    toggle_class(node, name, active)
+  })
 }
 
 function createElementBinding(type, binding, store, props) {
@@ -498,6 +513,10 @@ function forEach(object, iteratee) {
 
 function isListener(key) {
   return key.startsWith('on:')
+}
+
+function isClass(key) {
+  return key.startsWith('class:')
 }
 
 function isBinding(key) {

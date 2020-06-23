@@ -109,6 +109,7 @@ const button = new LabeledButton({
   - [x] bind:group
   - [x] bind:this
 - [ ] use:action
+- [x] class:name
 - [ ] transition:fn
 - [ ] in:fn/out:fn
 - [x] `<slot>`
