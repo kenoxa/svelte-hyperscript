@@ -97,6 +97,44 @@ const button = new LabeledButton({
 })
 ```
 
+## API
+
+We [aim to support](#feature-set) all svelte features.
+
+### Differences to Svelte
+
+To allow reactivity the following properties accept a [writable store](https://svelte.dev/docs#svelte_store):
+
+- [bind:property](https://svelte.dev/docs#bind_element_property)
+- [bind:group](https://svelte.dev/docs#bind_group)
+- [bind:this](https://svelte.dev/docs#bind_this)
+- [\<slot let:name={value}>](https://svelte.dev/docs#slot_let)
+
+[\<slot let:name={value}>](https://svelte.dev/docs#slot_let) additionally accepts a function which is called with the current value.
+
+This allows to for example to access the value if an input:
+
+```js
+import { test } from '@jest/globals'
+import { render } from '@testing-library/svelte'
+import userEvent from '@testing-library/user-event'
+
+import { writable, get } from 'svelte/store'
+
+test('write into an input', () => {
+  const text = writable()
+  const { getByRole } = render(h('input', { 'bind:value': text }))
+
+  const input = getByRole('textbox')
+
+  await userEvent.type(input, 'some text')
+
+  expect(get(text)).toBe('some text')
+})
+```
+
+The [tests](https://github.com/sastan/svelte-hyperscript/tree/main/src/__tests__) are a good source of how to use this feature.
+
 ## Feature Set
 
 - [x] plain html children
@@ -113,13 +151,9 @@ const button = new LabeledButton({
 - [ ] transition:fn
 - [ ] in:fn/out:fn
 - [x] `<slot>`
-- [x] `<slot name="name">`
-- [x] `<slot let:name={setter}>` **but** using setter or writable store
-- [x] `<slot let:name={property}>{property}</slot>` when using a writable store
-- [ ] Client-side component API
-  - [ ] component.\$set(props)
-  - [ ] component.\$on(event, callback)
-  - [ ] component.\$destroy()
+  - [x] `<slot name="name">`
+  - [x] `<slot let:name={setter}>` **but** using setter or writable store
+  - [x] `<slot let:name={property}>{property}</slot>` when using a writable store
 - [x] context propagation
 
 ## Support
