@@ -99,9 +99,9 @@ const button = new LabeledButton({
 
 ## API
 
-We [aim to support](#feature-set) all svelte features.
+We [aim to support](#feature-set) all svelte features. In some cases this is not possible due to the static nature of hypescript. For those case we provided feasible workarounds:
 
-### Differences to Svelte
+### Using stores to allow reactivity
 
 To allow reactivity the following properties accept a [writable store](https://svelte.dev/docs#svelte_store):
 
@@ -121,6 +121,8 @@ import userEvent from '@testing-library/user-event'
 
 import { writable, get } from 'svelte/store'
 
+import h from 'svelte-hyperscript'
+
 test('write into an input', () => {
   const text = writable()
   const { getByRole } = render(h('input', { 'bind:value': text }))
@@ -135,6 +137,18 @@ test('write into an input', () => {
 
 The [tests](https://github.com/sastan/svelte-hyperscript/tree/main/src/__tests__) are a good source of how to use this feature.
 
+### Action factories
+
+The [action feature](https://svelte.dev/docs#use_action) of svelte is supported but lacks the possibility to pass parameters to the action. This can still be achieved using a wrapper actions:
+
+```js
+import h from 'svelte-hyperscript'
+
+import action from 'some-action-module'
+
+h('div', { 'use:first': (node) => action(node, parameters) })
+```
+
 ## Feature Set
 
 - [x] plain html children
@@ -146,7 +160,7 @@ The [tests](https://github.com/sastan/svelte-hyperscript/tree/main/src/__tests__
   - [x] bind:property on html elements
   - [x] bind:group
   - [x] bind:this
-- [ ] use:action
+- [x] use:action
 - [x] class:name
 - [ ] transition:fn
 - [ ] in:fn/out:fn
@@ -155,6 +169,11 @@ The [tests](https://github.com/sastan/svelte-hyperscript/tree/main/src/__tests__
   - [x] `<slot let:name={setter}>` **but** using setter or writable store
   - [x] `<slot let:name={property}>{property}</slot>` when using a writable store
 - [x] context propagation
+- [ ] svelte:self
+- [ ] svelte:component
+- [ ] svelte:window
+- [ ] svelte:body
+- [ ] svelte:head
 
 ## Support
 

@@ -1,4 +1,5 @@
 import {
+  action_destroyer, // eslint-disable-line camelcase
   add_resize_listener, // eslint-disable-line camelcase
   append,
   attr,
@@ -100,10 +101,10 @@ function createComponentFragment([Component, props, children, componentSlotSette
   const $$listeners = {}
   const $$bindings = {}
   forEach(props, (key, value) => {
-    if (isListener(key)) {
+    if (key.startsWith('on:')) {
       const event = key.slice(3)
       $$listeners[event] = value
-    } else if (isBinding(key)) {
+    } else if (key.startsWith('bind:')) {
       const binding = key.slice(5)
       $$bindings[binding] = value
       $$props[binding] = get(value)
@@ -244,14 +245,18 @@ function createElementFragment([type, props, children]) {
   const $$listeners = {}
   const $$bindings = {}
   const $$classes = {}
+  const $$actions = {}
   forEach(props, (key, value) => {
-    if (isListener(key)) {
+    if (key.startsWith('on:')) {
       const event = key.slice(3)
       $$listeners[event] = value
-    } else if (isClass(key)) {
+    } else if (key.startsWith('class:')) {
       const name = key.slice(6)
       $$classes[name] = value
-    } else if (isBinding(key)) {
+    } else if (key.startsWith('use:')) {
+      const name = key.slice(4)
+      $$actions[name] = value
+    } else if (key.startsWith('bind:')) {
       const binding = key.slice(5)
       $$bindings[binding] = {
         store: value,
@@ -305,6 +310,10 @@ function createElementFragment([type, props, children]) {
         }
 
         listenWithBinding(dispose, type, binding, node, store, handler, props)
+      })
+
+      forEach($$actions, (name, factory) => {
+        dispose.push(action_destroyer(factory(node)))
       })
     },
     /* Update */ p: noop,
@@ -509,18 +518,6 @@ function forEach(object, iteratee) {
   if (object) {
     Object.entries(object).forEach(([key, value]) => iteratee(key, value, object))
   }
-}
-
-function isListener(key) {
-  return key.startsWith('on:')
-}
-
-function isClass(key) {
-  return key.startsWith('class:')
-}
-
-function isBinding(key) {
-  return key.startsWith('bind:')
 }
 
 const READONLY_BINDINGS = new Set([
