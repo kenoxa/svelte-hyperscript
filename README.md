@@ -1,6 +1,6 @@
 # svelte-hyperscript
 
-> use [hyperscript](https://github.com/hyperhype/hyperscript) to create svelte components
+> use [hyperscript](https://github.com/hyperhype/hyperscript) to create [svelte](https://svelte.dev/) components
 
 [![License](https://badgen.net/npm/license/svelte-hyperscript)](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE)
 [![Latest Release](https://badgen.net/npm/v/svelte-hyperscript)](https://www.npmjs.com/package/svelte-hyperscript)
@@ -17,7 +17,7 @@ This package exposes an [hyperscript](https://github.com/hyperhype/hyperscript) 
 
 ## Why?
 
-This is the core for [svelte-jsx](https://www.npmjs.com/package/svelte-jsx) and [svelte-htm](https://www.npmjs.com/package/svelte-htm). These packages allow to simplify svelte testing code especially slot handling.
+This is the core for [svelte-jsx] and [svelte-htm]. These packages allow to simplify svelte testing code especially slot handling.
 
 ## Installation
 
@@ -35,7 +35,9 @@ import h from 'svelte-hyperscript'
 const h = require('svelte-hyperscript')
 ```
 
-Or use script tags and globals ([UNPKG](https://unpkg.com/svelte-hyperscript/) | [jsDelivr](https://cdn.jsdelivr.net/npm/svelte-hyperscript/)).
+Alternatively use [UNPKG](https://unpkg.com/svelte-htm/) or [jsDelivr](https://cdn.jsdelivr.net/npm/svelte-htm/) packages:
+
+With script tags and globals:
 
 ```html
 <!-- UNPKG -->
@@ -43,12 +45,17 @@ Or use script tags and globals ([UNPKG](https://unpkg.com/svelte-hyperscript/) |
 
 <!-- jsDelivr -->
 <script src="https://cdn.jsdelivr.net/npm/svelte-hyperscript"></script>
+
+<script>
+  <!-- And then grab it off the global like so: -->
+  const h = svelteHyperscript
+</script>
 ```
 
-And then grab it off the global like so:
+Hotlinking from unpkg: _(no build tool needed!)_
 
 ```js
-const h = svelteHyperscript
+import h from 'https://unpkg.com/svelte-hyperscript?module'
 ```
 
 ## Usage
@@ -66,7 +73,7 @@ const button = new LabeledButton({
 })
 ```
 
-The above example written in jsx using [svelte-jsx](https://www.npmjs.com/package/svelte-jsx):
+The above example written in [jsx] using [svelte-jsx]:
 
 ```jsx
 import Button from '../src/Button.svelte'
@@ -83,7 +90,7 @@ const button = new LabeledButton({
 })
 ```
 
-or using [svelte-htm](https://www.npmjs.com/package/svelte-htm):
+or using [svelte-htm]:
 
 ```js
 import html from 'svelte-htm'
@@ -99,7 +106,7 @@ const button = new LabeledButton({
 
 ## API
 
-We [aim to support](#feature-set) all svelte features. In some cases this is not possible due to the static nature of hyperscript. For those case we provided feasible workarounds:
+We [aim to support](#feature-set) all svelte features. In some cases this is not possible due to the static nature of hyperscript. For those cases we provided feasible workarounds:
 
 ### Using stores to allow reactivity
 
@@ -148,6 +155,12 @@ import action from 'some-action-module'
 
 h('div', { 'use:action': (node) => action(node, parameters) })
 ```
+
+## Related Projects
+
+- [svelte-jsx]: write svelte components using [jsx]
+- [svelte-htm]: [**H**yperscript **T**agged **M**arkup](https://www.npmjs.com/package/htm) for svelte
+- [svelte-fragment-component]: a utility component
 
 ## Feature Set
 
@@ -200,3 +213,8 @@ We are following the [Conventional Commits](https://www.conventionalcommits.org)
 ## License
 
 `svelte-hyperscript` is open source software [licensed as MIT](https://github.com/sastan/svelte-hyperscript/blob/main/LICENSE).
+
+[jsx]: https://reactjs.org/docs/introducing-jsx.html
+[svelte-jsx]: https://www.npmjs.com/package/svelte-jsx
+[svelte-hyperscript]: https://www.npmjs.com/package/svelte-hyperscript
+[svelte-fragment-component]: https://www.npmjs.com/package/svelte-fragment-component
