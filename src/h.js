@@ -81,6 +81,7 @@ export default function h(type, props, ...children) {
         instance,
         createFragment,
         safe_not_equal,
+        // eslint-disable-next-line unicorn/no-reduce
         Object.keys($$props).reduce((memo, key, index) => {
           memo[key] = index
           return memo
