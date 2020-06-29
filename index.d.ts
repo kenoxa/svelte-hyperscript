@@ -4,6 +4,6 @@ declare function h(
   type: string | SvelteComponent,
   props?: Record<string, unknown> | null,
   ...children: unknown[]
-): SvelteComponent
+): typeof SvelteComponent
 
 export default h
