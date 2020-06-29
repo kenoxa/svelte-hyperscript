@@ -15,9 +15,11 @@
   "module": "./dist/esm/h.js",
   "unpkg": "./dist/umd/h.js",
   "jsdelivr": "./dist/umd/h.js",
+  "types": "index.d.ts",
   "sideEffects": false,
   "files": [
-    "dist"
+    "dist",
+    "index.d.ts"
   ],
   "scripts": {
     "prebuild": "rimraf dist",
