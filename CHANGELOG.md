@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://www.github.com/kenoxa/svelte-hyperscript/compare/v1.1.1...v1.2.0) (2020-06-29)
+
+
+### Features
+
+* add typescript definition ([4aded3a](https://www.github.com/kenoxa/svelte-hyperscript/commit/4aded3a97e5d058f26dcc717d3a4bc8c39ad0a91))
+
 ### [1.1.1](https://www.github.com/sastan/svelte-hyperscript/compare/v1.1.0...v1.1.1) (2020-06-23)
 
 ### Bug Fixes
