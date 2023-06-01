@@ -1,6 +1,6 @@
 import {
   action_destroyer, // eslint-disable-line camelcase
-  add_resize_listener, // eslint-disable-line camelcase
+  add_iframe_resize_listener, // eslint-disable-line camelcase
   append,
   attr,
   bind,
@@ -428,7 +428,7 @@ function listenWithBinding(dispose, type, binding, node, store, handler, props) 
   let listener
 
   if (isMeasuredBinding(binding)) {
-    listener = add_resize_listener(node, handler.bind(node))
+    listener = add_iframe_resize_listener(node, handler.bind(node))
   } else if (binding === 'this') {
     listener = () => store.set(null)
   } else if (isCheckableInput(type, props) || type === 'select') {
